@@ -1,5 +1,5 @@
 'use strict';
-angular.module('angularBase');
+angular.module('angularBase', []);
 angular.module('angularBase').service('Base', function Base($rootScope, $http, $q, PATHS, REQUEST_CACHE) {
     function BaseService() {
 
