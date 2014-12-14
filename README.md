@@ -1,9 +1,9 @@
 angular_base
 ============
-##This is a base service class that allows for modal creation in angularJs
+#This is a base service class that allows for modal creation in angularJs
 This allows you to take advantage of the base class without having to re-write a bunch of CRUD code. Here is how you implement it.
 
-**services/user.js**
+Define a service: **services/user.js**
 
     'use strict';
 
@@ -17,7 +17,7 @@ This allows you to take advantage of the base class without having to re-write a
         return new UserService();
     });
     
-###CRUD Opperations:
+##CRUD Opperations:
 ####Create
     User.fill({name:"Bob"});
     User.create().then(function(res){
@@ -47,3 +47,21 @@ This allows you to take advantage of the base class without having to re-write a
     User.delete(id).then(function(res){
     	   // Deleted
     });
+    
+##Installation :
+
+    bower install --save angular-base
+    <script src="path/to/bower/angular-base/base.js"></script>
+
+#### Inject Module    
+    angular.module('myApp', ['angularBase'])
+    
+####Implement Constants
+    angular.module('myApp')
+    .constant('REQUEST_CACHE', false)
+    .constant('PATHS', {
+        host: host,
+        api_host: hosts[host].api_host
+    });
+    
+    
