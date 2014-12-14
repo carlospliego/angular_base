@@ -60,8 +60,8 @@ Define a service: **services/user.js**
     angular.module('myApp')
     .constant('REQUEST_CACHE', false)
     .constant('PATHS', {
-        host: host,
-        api_host: hosts[host].api_host
+        host: "localhost",
+        api_host: "http://localhost:8081/"
     });
     
     
