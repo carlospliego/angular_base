@@ -9,11 +9,11 @@ Define a service: **services/user.js**
 
     app.service('User', function User(Base) {
 
-    function UserService() {
-        this.ctrl = "user/";
-    }
+        function UserService() {
+            this.ctrl = "user/";
+        }
 
-    UserService.prototype = new Base();
+        UserService.prototype = new Base();
         return new UserService();
     });
     
