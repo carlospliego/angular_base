@@ -7,6 +7,7 @@ angular.module('angularBase').service('Base', function Base($rootScope, $http, $
         this.errors = {
             "ctrl-defined": "If your class extends the base service is must have this.ctrl defined",
             "id-defined": "id " + defined,
+            "key-value-defined": "wher " + defined,
             "fill-first": "You must call fill on this object",
             "fill-defined": "_fill " + defined,
             "fill-type-object": "_fill must be of type 'object'",
@@ -30,6 +31,16 @@ angular.module('angularBase').service('Base', function Base($rootScope, $http, $
                 throw new Error(this.errors["ctrl-defined"]);
             }
             return this.request('GET', null, PATHS.api_host + this.ctrl + id, null, $q.defer());
+        };
+
+        this.where = function (where) {
+            if (!where) {
+                throw new Error(this.errors["key-value-defined"]);
+            }
+            if (!this.ctrl) {
+                throw new Error(this.errors["ctrl-defined"]);
+            }
+            return this.request('GET', null, PATHS.api_host + this.ctrl + "?where="+angular.toJson(where), null, $q.defer());
         };
 
         this.fill = function (_fill) {
