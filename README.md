@@ -36,6 +36,11 @@ Define a service: **services/user.js**
     	   // Get By Id
     });
  
+####Where 
+
+    User.where({key:value,..}).then(function(res){
+    	   // Get By value pair
+    });
 
 ####Update
     User.fill({name:"Carrie"});
