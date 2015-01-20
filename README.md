@@ -57,11 +57,15 @@ Define a service: **services/user.js**
     angular.module('myApp', ['angularBase'])
     
 ####Implement Constants
-    angular.module('myApp')
-    .constant('REQUEST_CACHE', false)
-    .constant('PATHS', {
-        host: "localhost",
-        api_host: "http://localhost:8081/"
-    });
-    
-    
+    app
+            .constant('PUBLIC_ROUTES', ['/login', '/signup'])
+            .constant('REQUEST_CACHE', false)
+            .constant('PATHS', {
+                host: "localhost",
+                api_host: "http://localhost:8081/"
+            })
+            .config(function ($httpProvider) {
+                $httpProvider.interceptors.push('authInterceptor');
+            });
+
+
