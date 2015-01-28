@@ -1,4 +1,8 @@
 {
   "name": "angular_base",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "devDependencies": {
+    "angularjs": "~1.3.11",
+    "angular-mocks": "~1.3.11"
+  }
 }

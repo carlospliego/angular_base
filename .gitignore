@@ -1,10 +1,5 @@
-.idea/.name
-.idea/angular_base.iml
-.idea/encodings.xml
-.idea/inspectionProfiles/Project_Default.xml
-.idea/inspectionProfiles/profiles_settings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/scopes/scope_settings.xml
-.idea/vcs.xml
-.idea/workspace.xml
+.idea/
+node_modules/
+coverage/
+dist/
+public/

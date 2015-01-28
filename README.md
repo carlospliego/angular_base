@@ -63,10 +63,22 @@ Define a service: **services/user.js**
     
 ####Implement Constants
     app
-            .constant('REQUEST_CACHE', false)
-            .constant('PATHS', {
+            .constant('ANGULAR_BASE_REQUEST_CACHE', false)
+            .constant('ANGULAR_BASE_PATHS', {
                 host: "localhost",
                 api_host: "http://localhost:8081/"
             });
 
+---
+
+##Development :
+
+    npm install
+    bower install
+    
+#### Gulp
+    test
+    test-coverage
+    build
+    
 
