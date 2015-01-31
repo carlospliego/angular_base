@@ -17,6 +17,19 @@ describe('Base', function () {
         });
     }));
 
+
+    beforeEach(module('angularBase', function ($provide) {
+        // Mock a service implementation
+        $provide.service('Apple', function (Base) {
+            function UserService() {
+                this.ctrl = "apple/";
+            }
+
+            UserService.prototype = new Base();
+            return new UserService();
+        });
+    }));
+
     it('should have a defined controller', inject(function (Apple) {
         expect(Apple.ctrl).toBeDefined();
     }));

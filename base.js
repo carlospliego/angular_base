@@ -18,7 +18,6 @@ angular.module('angularBase').provider('$angularBaseConfig', [function () {
 angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$angularBaseConfig',
     function Base($rootScope, $http, $q, $angularBaseConfig) {
         function BaseService() {
-
             var defined = "must be defined";
             this.errors = {
                 "ctrl-defined": "If your class extends the base service is must have this.ctrl defined",
@@ -29,8 +28,13 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 "fill-type-object": "_fill must be of type 'object'",
                 "method-defined": "'method' " + defined,
                 "url-defined": "'url' " + defined,
-                "q-defined": "'q' " + defined
+                "q-defined": "'q' " + defined,
+                "$angularBaseConfigProvider_errors": "$angularBaseConfigProvider.api & $angularBaseConfigProvider.cache are not set"
             };
+
+            if (!$angularBaseConfig || !$angularBaseConfig.api || typeof $angularBaseConfig.cache == 'undefined') {
+                throw new Error(this.errors["$angularBaseConfigProvider_errors"]);
+            }
 
             this.all = function () {
                 if (!this.ctrl) {
