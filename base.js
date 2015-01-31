@@ -1,8 +1,22 @@
 'use strict';
 
 angular.module('angularBase', []);
-angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', 'ANGULAR_BASE_PATHS', 'ANGULAR_BASE_REQUEST_CACHE',
-    function Base($rootScope, $http, $q, ANGULAR_BASE_PATHS, ANGULAR_BASE_REQUEST_CACHE) {
+
+angular.module('angularBase').provider('$angularBaseConfig', [function () {
+
+    this.$get = function () {
+        return this;
+    };
+
+    this.config = function (obj) {
+        for (var i in obj) {
+            this[i] = obj[i];
+        }
+    };
+}]);
+
+angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$angularBaseConfig',
+    function Base($rootScope, $http, $q, $angularBaseConfig) {
         function BaseService() {
 
             var defined = "must be defined";
@@ -22,7 +36,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', 'ANG
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, ANGULAR_BASE_PATHS.api_host + this.ctrl, null, $q.defer());
+                return this.request('GET', null, $angularBaseConfig.api + this.ctrl, null, $q.defer());
             };
 
             this.get = function (id) {
@@ -32,7 +46,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', 'ANG
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, ANGULAR_BASE_PATHS.api_host + this.ctrl + id, null, $q.defer());
+                return this.request('GET', null, $angularBaseConfig.api + this.ctrl + id, null, $q.defer());
             };
 
             this.where = function (where) {
@@ -42,7 +56,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', 'ANG
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, ANGULAR_BASE_PATHS.api_host + this.ctrl + "?where=" + angular.toJson(where), null, $q.defer());
+                return this.request('GET', null, $angularBaseConfig.api + this.ctrl + "?where=" + angular.toJson(where), null, $q.defer());
             };
 
             this.fill = function (_fill) {
@@ -62,7 +76,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', 'ANG
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('POST', null, ANGULAR_BASE_PATHS.api_host + this.ctrl, this.data, $q.defer());
+                return this.request('POST', null, $angularBaseConfig.api + this.ctrl, this.data, $q.defer());
             };
 
             this.update = function (id) {
@@ -75,7 +89,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', 'ANG
                 if (!id) {
                     throw new Error(this.errors["id-defined"]);
                 }
-                return this.request('PUT', null, ANGULAR_BASE_PATHS.api_host + this.ctrl + id, this.data, $q.defer());
+                return this.request('PUT', null, $angularBaseConfig.api + this.ctrl + id, this.data, $q.defer());
             };
 
             this.delete = function (id) {
@@ -85,7 +99,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', 'ANG
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('DELETE', null, ANGULAR_BASE_PATHS.api_host + this.ctrl + id, null, $q.defer());
+                return this.request('DELETE', null, $angularBaseConfig.api + this.ctrl + id, null, $q.defer());
             };
 
             this.request = function (method, header, url, data, q) {
@@ -104,7 +118,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', 'ANG
                     url: url,
                     data: data,
                     header: (header) ? header : "{Content-Type: application/json}",
-                    cache: ANGULAR_BASE_REQUEST_CACHE
+                    cache: $angularBaseConfig.cache
                 }).success(function (data, status, headers) {
                     var results = {};
                     results.data = data;

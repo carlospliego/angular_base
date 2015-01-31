@@ -62,12 +62,10 @@ Define a service: **services/user.js**
     angular.module('myApp', ['angularBase'])
     
 ####Implement Constants
-    app
-            .constant('ANGULAR_BASE_REQUEST_CACHE', false)
-            .constant('ANGULAR_BASE_PATHS', {
-                host: "localhost",
-                api_host: "http://localhost:8081/"
-            });
+    $angularBaseConfigProvider.config({
+       api:"http://localhost:8081/",
+       cache:false
+    });
 
 ---
 

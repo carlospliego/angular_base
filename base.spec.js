@@ -1,12 +1,11 @@
 describe('Base', function () {
-    beforeEach(module('angularBase', function ($provide) {
-        // Mock constants here
-        $provide.constant('ANGULAR_BASE_REQUEST_CACHE', false);
-        $provide.constant('ANGULAR_BASE_PATHS', {
-            host: "localhost",
-            api_host: "http://localhost:8081/"
-        });
 
+    beforeEach(module('angularBase', function ($angularBaseConfigProvider, $provide) {
+        // Mock constants here
+        $angularBaseConfigProvider.config({
+            api:"http://localhost:8081/",
+            cache:false
+        });
         // Mock a service implementation
         $provide.service('Apple', function (Base) {
             function UserService() {
