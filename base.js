@@ -13,34 +13,43 @@ angular.module('angularBase').provider('$angularBaseConfig', [function () {
             this[i] = obj[i];
         }
     };
+
 }]);
 
 angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$angularBaseConfig',
     function Base($rootScope, $http, $q, $angularBaseConfig) {
         function BaseService() {
-            var defined = "must be defined";
+            // Config Options
+            this.config = $angularBaseConfig;
+
             this.errors = {
                 "ctrl-defined": "If your class extends the base service is must have this.ctrl defined",
-                "id-defined": "id " + defined,
-                "key-value-defined": "where " + defined,
+                "id-defined": "id must be defined",
+                "key-value-defined": "where must be defined",
                 "fill-first": "You must call fill on this object",
-                "fill-defined": "_fill " + defined,
+                "fill-defined": "_fill must be defined",
                 "fill-type-object": "_fill must be of type 'object'",
-                "method-defined": "'method' " + defined,
-                "url-defined": "'url' " + defined,
-                "q-defined": "'q' " + defined,
-                "$angularBaseConfigProvider_errors": "$angularBaseConfigProvider.api & $angularBaseConfigProvider.cache are not set"
+                "method-defined": "'method' must be defined",
+                "url-defined": "'url' must be defined",
+                "q-defined": "'q' must be defined",
+                "$angularBaseConfigProvider_error": "$angularBaseConfigProvider.api & " +
+                "$angularBaseConfigProvider.cache are not set"
             };
 
-            if (!$angularBaseConfig || !$angularBaseConfig.api || typeof $angularBaseConfig.cache == 'undefined') {
-                throw new Error(this.errors["$angularBaseConfigProvider_errors"]);
+            // $angularBaseConfigProvider Error
+            if (!this.config || !this.config.api || typeof this.config.cache == 'undefined') {
+                throw new Error(this.errors["$angularBaseConfigProvider_error"]);
             }
+
+            this.setConfig = function (_config) {
+                this.config = _config;
+            };
 
             this.all = function () {
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, $angularBaseConfig.api + this.ctrl, null, $q.defer());
+                return this.request('GET', null, this.config.api + this.ctrl, null, $q.defer());
             };
 
             this.get = function (id) {
@@ -50,7 +59,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, $angularBaseConfig.api + this.ctrl + id, null, $q.defer());
+                return this.request('GET', null, this.config.api + this.ctrl + id, null, $q.defer());
             };
 
             this.where = function (where) {
@@ -60,7 +69,8 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, $angularBaseConfig.api + this.ctrl + "?where=" + angular.toJson(where), null, $q.defer());
+                return this.request('GET', null, this.config.api + this.ctrl + "?where=" + angular.toJson(where), null,
+                    $q.defer());
             };
 
             this.fill = function (_fill) {
@@ -80,7 +90,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('POST', null, $angularBaseConfig.api + this.ctrl, this.data, $q.defer());
+                return this.request('POST', null, this.config.api + this.ctrl, this.data, $q.defer());
             };
 
             this.update = function (id) {
@@ -93,7 +103,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!id) {
                     throw new Error(this.errors["id-defined"]);
                 }
-                return this.request('PUT', null, $angularBaseConfig.api + this.ctrl + id, this.data, $q.defer());
+                return this.request('PUT', null, this.config.api + this.ctrl + id, this.data, $q.defer());
             };
 
             this.delete = function (id) {
@@ -103,7 +113,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('DELETE', null, $angularBaseConfig.api + this.ctrl + id, null, $q.defer());
+                return this.request('DELETE', null, this.config.api + this.ctrl + id, null, $q.defer());
             };
 
             this.request = function (method, header, url, data, q) {
@@ -122,7 +132,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                     url: url,
                     data: data,
                     header: (header) ? header : "{Content-Type: application/json}",
-                    cache: $angularBaseConfig.cache
+                    cache: this.config.cache
                 }).success(function (data, status, headers) {
                     var results = {};
                     results.data = data;

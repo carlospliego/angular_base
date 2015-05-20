@@ -17,7 +17,24 @@ Define a service: **services/user.js**
         return new UserService();
     });
     
-##CRUD Opperations:
+####Override $angularBaseConfigProvider in a model
+    
+    app.service('User', function User(Base) {
+        var U;
+        function UserService() {
+            this.ctrl = "user/";
+        }
+
+        UserService.prototype = new Base();
+        U = new UserService();
+        U.setConfig({
+            api: "http://localhost:9000/",
+            cache: true
+        });
+        return U;
+    });
+    
+##CRUD Operations:
 ####Create
     User.fill({name:"Bob"});
     User.create().then(function(res){

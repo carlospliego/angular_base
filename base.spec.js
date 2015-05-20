@@ -1,34 +1,74 @@
-describe('Base', function () {
+describe('Base General Errors', function () {
 
     beforeEach(module('angularBase', function ($angularBaseConfigProvider, $provide) {
+    }));
+
+    it('should throw a $angularBaseConfigProvider_error', inject(function (Base) {
+        expect(function () {
+            var b = new Base();
+        }).toThrow(new Error("$angularBaseConfigProvider.api & " +
+            "$angularBaseConfigProvider.cache are not set"));
+    }));
+
+    // $angularBaseConfigProvider not formatted correctly errors
+});
+
+describe('Base Configuration Override', function () {
+
+    var OverridedConfig = {
+        api: "http://localhost:9000/",
+        cache: true
+    };
+
+    beforeEach(module('angularBase', function ($angularBaseConfigProvider, $provide) {
+
         // Mock constants here
         $angularBaseConfigProvider.config({
-            api:"http://localhost:8081/",
-            cache:false
+            api: "http://localhost:8081/",
+            cache: false
         });
+
         // Mock a service implementation
         $provide.service('Apple', function (Base) {
-            function UserService() {
+            function Service() {
                 this.ctrl = "apple/";
             }
 
-            UserService.prototype = new Base();
-            return new UserService();
+            Service.prototype = new Base();
+            var S = new Service();
+            S.setConfig(OverridedConfig);
+            return S;
         });
+
     }));
 
+    it('should override $angularBaseConfigProvider', inject(function (Apple) {
+        expect(Apple.config).toBeDefined();
+        expect(Apple.config).toEqual(OverridedConfig);
+    }));
+});
 
-    beforeEach(module('angularBase', function ($provide) {
+describe('Base CRUD', function () {
+
+    beforeEach(module('angularBase', function ($angularBaseConfigProvider, $provide) {
+
+        // Mock constants here
+        $angularBaseConfigProvider.config({
+            api: "http://localhost:8081/",
+            cache: false
+        });
+
         // Mock a service implementation
         $provide.service('Apple', function (Base) {
-            function UserService() {
+            function Service() {
                 this.ctrl = "apple/";
             }
 
-            UserService.prototype = new Base();
-            return new UserService();
+            Service.prototype = new Base();
+            return new Service();
         });
     }));
+
 
     it('should have a defined controller', inject(function (Apple) {
         expect(Apple.ctrl).toBeDefined();
@@ -260,6 +300,5 @@ describe('Base', function () {
             Apple.request('GET', {}, "/someerrorurl", {}, $q.defer())
             $httpBackend.flush();
         }));
-
     });
 });
