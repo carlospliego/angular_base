@@ -28,6 +28,10 @@
       </header>
       <section>
         <h1>
+<a id="angular_base--website-" class="anchor" href="#angular_base--website-" aria-hidden="true"><span class="octicon octicon-link"></span></a>angular_base <a href="http://carlospliego.github.io/angular_base/"> Website </a>
+</h1>
+
+<h1>
 <a id="this-is-a-base-service-class-that-allows-for-modal-creation-in-angularjs" class="anchor" href="#this-is-a-base-service-class-that-allows-for-modal-creation-in-angularjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>This is a base service class that allows for modal creation in angularJs</h1>
 
 <p>This allows you to take advantage of the base class without having to re-write a bunch of CRUD code. Here is how you implement it.</p>
@@ -82,6 +86,17 @@ User.create().then(function(res){
 <a id="retrieve-all" class="anchor" href="#retrieve-all" aria-hidden="true"><span class="octicon octicon-link"></span></a>Retrieve all</h4>
 
 <pre><code>User.all().then(function(res){
+       // All
+});
+</code></pre>
+
+<h4>
+<a id="retrieve-all-paginated" class="anchor" href="#retrieve-all-paginated" aria-hidden="true"><span class="octicon octicon-link"></span></a>Retrieve all paginated</h4>
+
+<p>Paginated object can be anything you want and will converted to a query string.
+For example: ?page=2&amp;limit=4&amp;per_page=4</p>
+
+<pre><code>User.all({page:2, limit:4, per_page: 4}).then(function(res){
        // All
 });
 </code></pre>
