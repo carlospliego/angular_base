@@ -62,11 +62,13 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
             };
 
             this.all = function (paginated) {
+                var url;
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, this.config.api + this.ctrl
-                + (paginated) ? "?"+serialize(paginated) : "", null, $q.defer());
+                url = this.config.api + ((typeof paginated == 'object') ? this.ctrl.substring(0, this.ctrl.length - 1)
+                        : this.ctrl) + ((typeof paginated == 'object') ? '?'+serialize(paginated) : "");
+                return this.request('GET', null, url, null, $q.defer());
             };
 
             this.get = function (id) {
