@@ -19,6 +19,22 @@ angular.module('angularBase').provider('$angularBaseConfig', [function () {
 angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$angularBaseConfig',
     function Base($rootScope, $http, $q, $angularBaseConfig) {
         function BaseService() {
+
+            // Object Serializer
+            /* istanbul ignore next */
+            var serialize = function(obj, prefix) {
+                var str = [];
+                for(var p in obj) {
+                    if (obj.hasOwnProperty(p)) {
+                        var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+                        str.push(typeof v == "object" ?
+                            serialize(v, k) :
+                        encodeURIComponent(k) + "=" + encodeURIComponent(v));
+                    }
+                }
+                return str.join("&");
+            };
+
             // Config Options
             this.config = $angularBaseConfig;
 
@@ -45,11 +61,12 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 this.config = _config;
             };
 
-            this.all = function () {
+            this.all = function (paginated) {
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, this.config.api + this.ctrl, null, $q.defer());
+                return this.request('GET', null, this.config.api + this.ctrl
+                + (paginated) ? "?"+serialize(paginated) : "", null, $q.defer());
             };
 
             this.get = function (id) {

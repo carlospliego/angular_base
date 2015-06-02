@@ -1,6 +1,6 @@
 {
   "name": "angular_base",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "A base class for angular services",
   "main": "base.js",
   "dependencies": {},

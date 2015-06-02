@@ -94,6 +94,33 @@ describe('Base CRUD', function () {
         }));
     });
 
+    // Base.all paginated
+    describe('all()', function () {
+
+        var paginated = {
+            page:2,
+            limit:3,
+            per_page:4
+        };
+
+        it('should return a promise', inject(function (Apple) {
+            // Paginated object can be anything you want
+            expect(Apple.all(paginated).then).toBeDefined();
+        }));
+
+        it('should throw an extends error', inject(function (Apple) {
+            var copy = angular.copy(Apple);
+            Apple.ctrl = "";
+
+            expect(function () {
+                Apple.all(paginated)
+            }).toThrow(new Error("If your class extends the base service is must have this.ctrl defined"));
+
+            // Restore to normal
+            Apple.ctrl = copy.ctrl;
+        }));
+    });
+
     // Base.get()
     describe('get()', function () {
 

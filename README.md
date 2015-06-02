@@ -46,6 +46,15 @@ Define a service: **services/user.js**
     User.all().then(function(res){
     	   // All
     });
+    
+####Retrieve all paginated
+    
+Paginated object can be anything you want and will converted to a query string.
+For example: ?page=2&limit=4&per_page=4
+    
+    User.all({page:2, limit:4, per_page: 4}).then(function(res){
+           // All
+    });
  
 ####Retrieve 
 
