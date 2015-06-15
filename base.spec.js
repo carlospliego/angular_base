@@ -44,7 +44,12 @@ describe('Base Configuration Override', function () {
 
     it('should override $angularBaseConfigProvider', inject(function (Apple) {
         expect(Apple.config).toBeDefined();
-        expect(Apple.config).toEqual(OverridedConfig);
+        var i, configKeys = Object.keys(Apple.config);
+        for (i in configKeys) {
+            if (typeof configKeys[i] == 'object') {
+                expect(Apple.config[configKeys[i]]).toEqual(OverridedConfig[configKeys[i]]);
+            }
+        }
     }));
 });
 
@@ -98,9 +103,9 @@ describe('Base CRUD', function () {
     describe('all()', function () {
 
         var paginated = {
-            page:2,
-            limit:3,
-            per_page:4
+            page: 2,
+            limit: 3,
+            per_page: 4
         };
 
         it('should return a promise', inject(function (Apple) {

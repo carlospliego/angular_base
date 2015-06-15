@@ -58,7 +58,11 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
             }
 
             this.setConfig = function (_config) {
-                this.config = _config;
+                //this.config = _config;
+                var sConfigKeys = Object.keys(_config), i;
+                for(i in sConfigKeys){
+                    this.config[sConfigKeys[i]] = _config[sConfigKeys[i]];
+                }
             };
 
             this.all = function (paginated) {
