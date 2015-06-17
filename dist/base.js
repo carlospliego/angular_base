@@ -62,6 +62,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 var sConfigKeys = Object.keys(_config), i;
                 for(i in sConfigKeys){
                     this.config[sConfigKeys[i]] = _config[sConfigKeys[i]];
+                    $angularBaseConfig[sConfigKeys[i]] = _config[sConfigKeys[i]]
                 }
             };
 
