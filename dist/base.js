@@ -22,9 +22,9 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
 
             // Object Serializer
             /* istanbul ignore next */
-            var serialize = function(obj, prefix) {
+            var serialize = function (obj, prefix) {
                 var str = [];
-                for(var p in obj) {
+                for (var p in obj) {
                     if (obj.hasOwnProperty(p)) {
                         var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
                         str.push(typeof v == "object" ?
@@ -57,22 +57,17 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 throw new Error(this.errors["$angularBaseConfigProvider_error"]);
             }
 
-            this.setConfig = function (_config) {
-                //this.config = _config;
-                var sConfigKeys = Object.keys(_config), i;
-                for(i in sConfigKeys){
-                    this.config[sConfigKeys[i]] = _config[sConfigKeys[i]];
-                    $angularBaseConfig[sConfigKeys[i]] = _config[sConfigKeys[i]]
-                }
-            };
-
             this.all = function (paginated) {
                 var url;
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                url = this.config.api + ((typeof paginated == 'object') ? this.ctrl.substring(0, this.ctrl.length - 1)
-                        : this.ctrl) + ((typeof paginated == 'object') ? '?'+serialize(paginated) : "");
+
+                this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
+                    ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
+
+                url = this.config.api + ((typeof paginated == 'object') ? '/' + this.ctrl :
+                    '/' + this.ctrl) + ((typeof paginated == 'object') ? '?' + serialize(paginated) : "");
                 return this.request('GET', null, url, null, $q.defer());
             };
 
@@ -83,7 +78,10 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, this.config.api + this.ctrl + id, null, $q.defer());
+                this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
+                    ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
+
+                return this.request('GET', null, this.config.api + '/' + this.ctrl + '/' + id, null, $q.defer());
             };
 
             this.where = function (where) {
@@ -93,7 +91,10 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('GET', null, this.config.api + this.ctrl + "?where=" + angular.toJson(where), null,
+                this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
+                    ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
+
+                return this.request('GET', null, this.config.api + '/' + this.ctrl + '/' + "?where=" + angular.toJson(where), null,
                     $q.defer());
             };
 
@@ -104,6 +105,8 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (typeof _fill !== "object") {
                     throw new Error(this.errors["fill-type-object"]);
                 }
+                this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
+                    ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
                 this.data = _fill;
             };
 
@@ -114,7 +117,9 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('POST', null, this.config.api + this.ctrl, this.data, $q.defer());
+                this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
+                    ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
+                return this.request('POST', null, this.config.api + '/' + this.ctrl + '/', this.data, $q.defer());
             };
 
             this.update = function (id) {
@@ -127,7 +132,9 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!id) {
                     throw new Error(this.errors["id-defined"]);
                 }
-                return this.request('PUT', null, this.config.api + this.ctrl + id, this.data, $q.defer());
+                this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
+                    ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
+                return this.request('PUT', null, this.config.api + '/' + this.ctrl + '/' + id, this.data, $q.defer());
             };
 
             this.delete = function (id) {
@@ -137,7 +144,9 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
-                return this.request('DELETE', null, this.config.api + this.ctrl + id, null, $q.defer());
+                this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
+                    ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
+                return this.request('DELETE', null, this.config.api + '/' + this.ctrl + '/' + id, null, $q.defer());
             };
 
             this.request = function (method, header, url, data, q) {

@@ -13,45 +13,45 @@ describe('Base General Errors', function () {
     // $angularBaseConfigProvider not formatted correctly errors
 });
 
-describe('Base Configuration Override', function () {
-
-    var OverridedConfig = {
-        api: "http://localhost:9000/",
-        cache: true
-    };
-
-    beforeEach(module('angularBase', function ($angularBaseConfigProvider, $provide) {
-
-        // Mock constants here
-        $angularBaseConfigProvider.config({
-            api: "http://localhost:8081/",
-            cache: false
-        });
-
-        // Mock a service implementation
-        $provide.service('Apple', function (Base) {
-            function Service() {
-                this.ctrl = "apple/";
-            }
-
-            Service.prototype = new Base();
-            var S = new Service();
-            S.setConfig(OverridedConfig);
-            return S;
-        });
-
-    }));
-
-    it('should override $angularBaseConfigProvider', inject(function (Apple) {
-        expect(Apple.config).toBeDefined();
-        var i, configKeys = Object.keys(Apple.config);
-        for (i in configKeys) {
-            if (typeof configKeys[i] == 'object') {
-                expect(Apple.config[configKeys[i]]).toEqual(OverridedConfig[configKeys[i]]);
-            }
-        }
-    }));
-});
+//describe('Base Configuration Override', function () {
+//
+//    var OverridedConfig = {
+//        api: "http://localhost:9000/",
+//        cache: true
+//    };
+//
+//    beforeEach(module('angularBase', function ($angularBaseConfigProvider, $provide) {
+//
+//        // Mock constants here
+//        $angularBaseConfigProvider.config({
+//            api: "http://localhost:8081/",
+//            cache: false
+//        });
+//
+//        // Mock a service implementation
+//        $provide.service('Apple', function (Base) {
+//            function Service() {
+//                this.ctrl = "apple/";
+//            }
+//
+//            Service.prototype = new Base();
+//            var S = new Service();
+//            S.setConfig(OverridedConfig);
+//            return S;
+//        });
+//
+//    }));
+//
+//    it('should override $angularBaseConfigProvider', inject(function (Apple) {
+//        expect(Apple.config).toBeDefined();
+//        var i, configKeys = Object.keys(Apple.config);
+//        for (i in configKeys) {
+//            if (typeof configKeys[i] == 'object') {
+//                expect(Apple.config[configKeys[i]]).toEqual(OverridedConfig[configKeys[i]]);
+//            }
+//        }
+//    }));
+//});
 
 describe('Base CRUD', function () {
 
