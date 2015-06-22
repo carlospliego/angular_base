@@ -58,7 +58,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
             }
 
             this.all = function (paginated) {
-                var url;
+                var url, pag;
                 if (!this.ctrl) {
                     throw new Error(this.errors["ctrl-defined"]);
                 }
@@ -66,8 +66,10 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
                     ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
 
-                url = this.config.api + ((typeof paginated == 'object') ? '/' + this.ctrl :
-                    '/' + this.ctrl) + ((typeof paginated == 'object') ? '?' + serialize(paginated) : "");
+                pag = typeof paginated == 'object' && Object.keys(paginated) > 0;
+
+                url = this.config.api + ((pag) ? '/' + this.ctrl :
+                    '/' + this.ctrl) + ((pag) ? '?' + serialize(paginated) : "");
                 return this.request('GET', null, url, null, $q.defer());
             };
 
