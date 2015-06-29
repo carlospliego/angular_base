@@ -35,6 +35,9 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 return str.join("&");
             };
 
+            // Expose Serializer
+            this.serialize = serialize;
+
             // Config Options
             this.config = $angularBaseConfig;
 
