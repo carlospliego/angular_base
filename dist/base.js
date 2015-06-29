@@ -66,7 +66,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
                     ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
 
-                pag = typeof paginated == 'object' && Object.keys(paginated) > 0;
+                pag = typeof paginated == 'object' && Object.keys(paginated).length > 0;
 
                 url = this.config.api + ((pag) ? '/' + this.ctrl :
                     '/' + this.ctrl) + ((pag) ? '?' + serialize(paginated) : "");
