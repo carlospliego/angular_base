@@ -1,6 +1,6 @@
 angular_base [ Website ](http://carlospliego.github.io/angular_base/)
 ============
-#This is a base service class that allows for modal creation in angularJs
+#This is a base service class that allows for model creation in angularJs
 This allows you to take advantage of the base class without having to re-write a bunch of CRUD code. Here is how you implement it.
 
 Define a service: **services/user.js**
