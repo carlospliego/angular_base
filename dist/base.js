@@ -169,7 +169,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                     method: method,
                     url: url,
                     data: data,
-                    header: (header) ? header : "{Content-Type: application/json}",
+                    headers: (header) ? header : "{Content-Type: application/json}",
                     cache: this.config.cache
                 }).success(function (data, status, headers) {
                     var results = {};
