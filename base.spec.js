@@ -268,6 +268,42 @@ describe('Base CRUD', function () {
         }));
     });
 
+    // Base.patch()
+    describe('patch()', function () {
+        it('should return a promise', inject(function (Apple) {
+            Apple.fill({});
+            expect(Apple.patch(1).then).toBeDefined();
+            delete Apple.data;
+        }));
+
+        it('should throw has not been filled error', inject(function (Apple) {
+            expect(function () {
+                Apple.patch()
+            }).toThrow(new Error("You must call fill on this object"));
+        }));
+
+        it('should throw an extends error', inject(function (Apple) {
+            var copy = angular.copy(Apple);
+            Apple.ctrl = "";
+            Apple.fill({});
+            expect(function () {
+                Apple.patch()
+            }).toThrow(new Error("If your class extends the base service is must have this.ctrl defined"));
+
+            // Restore to normal
+            Apple.ctrl = copy.ctrl;
+            delete Apple.data;
+        }));
+
+        it('should throw id undefined error', inject(function (Apple) {
+            Apple.fill({});
+            expect(function () {
+                Apple.patch()
+            }).toThrow(new Error("id must be defined"));
+            delete Apple.data;
+        }));
+    });
+
     // Base.delete()
     describe('delete()', function () {
         it('should return a promise', inject(function (Apple) {

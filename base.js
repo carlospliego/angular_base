@@ -142,6 +142,21 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
                 return this.request('PUT', null, this.config.api + '/' + this.ctrl + '/' + id, this.data, $q.defer());
             };
 
+            this.patch = function (id) {
+                if (!this.data) {
+                    throw new Error(this.errors["fill-first"]);
+                }
+                if (!this.ctrl) {
+                    throw new Error(this.errors["ctrl-defined"]);
+                }
+                if (!id) {
+                    throw new Error(this.errors["id-defined"]);
+                }
+                this.config = ($angularBaseConfig.hasOwnProperty('modelConfig') && $angularBaseConfig.modelConfig.hasOwnProperty(this.ctrl))
+                    ? $angularBaseConfig.modelConfig[this.ctrl] : $angularBaseConfig;
+                return this.request('PATCH', null, this.config.api + '/' + this.ctrl + '/' + id, this.data, $q.defer());
+            };
+
             this.delete = function (id) {
                 if (!id) {
                     throw new Error(this.errors["id-defined"]);
@@ -155,7 +170,7 @@ angular.module('angularBase').service('Base', ['$rootScope', '$http', '$q', '$an
             };
 
             this.request = function (method, header, url, data, q) {
-                if (!method || (method != "POST" && method != "GET" && method != "PUT" && method != "DELETE")) {
+                if (!method || (method != "POST" && method != "GET" && method != "PUT" && method != "DELETE" && method != "PATCH")) {
                     throw new Error(this.errors["method-defined"]);
                 }
                 if (!url) {
