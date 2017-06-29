@@ -17,7 +17,7 @@ Define a service: **services/user.js**
         return new UserService();
     });
     
-####Override $angularBaseConfigProvider in a model
+#### Override $angularBaseConfigProvider in a model
     
     app.service('User', function User(Base) {
         var U;
@@ -34,20 +34,20 @@ Define a service: **services/user.js**
         return U;
     });
     
-##CRUD Operations:
-####Create
+## CRUD Operations:
+#### Create
     User.fill({name:"Bob"});
     User.create().then(function(res){
     	   // Created
     });
  
-####Retrieve all
+#### Retrieve all
     
     User.all().then(function(res){
     	   // All
     });
     
-####Retrieve all paginated
+#### Retrieve all paginated
     
 Paginated object can be anything you want and will converted to a query string.
 For example: ?page=2&limit=4&per_page=4
@@ -56,30 +56,30 @@ For example: ?page=2&limit=4&per_page=4
            // All
     });
  
-####Retrieve 
+#### Retrieve 
 
     User.get(id).then(function(res){
     	   // Get By Id
     });
  
-####Where 
+#### Where 
 
     User.where({key:value,..}).then(function(res){
     	   // Get By value pair
     });
 
-####Update
+#### Update
     User.fill({name:"Carrie"});
     User.update(id).then(function(res){
     	   // Updated
     });
     
-####Delete
+#### Delete
     User.delete(id).then(function(res){
     	   // Deleted
     });
     
-##Installation :
+## Installation :
 
     bower install --save angular-base
     <script src="path/to/bower/angular-base/base.js"></script>
@@ -87,7 +87,7 @@ For example: ?page=2&limit=4&per_page=4
 #### Inject Module    
     angular.module('myApp', ['angularBase'])
     
-####Implement Constants
+#### Implement Constants
     $angularBaseConfigProvider.config({
        api:"http://localhost:8081/",
        cache:false
@@ -95,7 +95,7 @@ For example: ?page=2&limit=4&per_page=4
 
 ---
 
-##Development :
+## Development :
 
     npm install
     bower install
